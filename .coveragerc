@@ -1,0 +1,4 @@
+[run]
+source = implicit_globals.py
+omit = setup.py
+       test_implicit_globals.py

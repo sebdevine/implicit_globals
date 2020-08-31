@@ -17,8 +17,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",
-    extras_require={},
     python_requires='>=3.6',
+    extras_require={},
     url=__github__,
     keywords="implicit globals decorator functional",
     classifiers=[

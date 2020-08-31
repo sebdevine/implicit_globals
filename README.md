@@ -1,4 +1,5 @@
 # implicit-globals
+![](https://api.travis-ci.com/sebdevine/implicit_globals.svg?branch=master&status=passed)
 
 **TL;DR: A Python decorator that allow you to modify at runtime a function's 
 implicit global variables or default variables.**
