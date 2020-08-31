@@ -1,5 +1,10 @@
 # implicit-globals
 ![](https://api.travis-ci.com/sebdevine/implicit_globals.svg?branch=master&status=passed)
+[![codecov](https://codecov.io/gh/sebdevine/implicit_globals/branch/master/graph/badge.svg)](https://codecov.io/gh/sebdevine/implicit_globals)
+[![PyPI license](https://img.shields.io/pypi/l/implicit-globals.svg)](https://pypi.python.org/pypi/implicit-globals/)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/implicit-globals.svg)](https://pypi.python.org/pypi/implicit-globals/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/implicit-globals.svg)](https://pypi.python.org/pypi/implicit-globals/)
+
 
 **TL;DR: A Python decorator that allow you to modify at runtime a function's 
 implicit global variables or default variables.**
