@@ -1,5 +1,5 @@
 # implicit-globals
-![](https://api.travis-ci.com/sebdevine/implicit_globals.svg?branch=master&status=passed)
+[![Build Status](https://travis-ci.com/sebdevine/implicit_globals.svg?branch=master)](https://travis-ci.com/sebdevine/implicit_globals)
 [![codecov](https://codecov.io/gh/sebdevine/implicit_globals/branch/master/graph/badge.svg)](https://codecov.io/gh/sebdevine/implicit_globals)
 [![PyPI license](https://img.shields.io/pypi/l/implicit-globals.svg)](https://pypi.python.org/pypi/implicit-globals/)
 [![PyPI version shields.io](https://img.shields.io/pypi/v/implicit-globals.svg)](https://pypi.python.org/pypi/implicit-globals/)
