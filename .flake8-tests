@@ -1,0 +1,12 @@
+[flake8]
+builtins = basestring, unicode
+max-line-length = 110
+ignore =
+  E306,
+  E701,
+  E704,
+  F811,
+  B3,
+  DW12
+exclude =
+  implicit_globals.py

@@ -27,7 +27,7 @@ __author__ = "Sebastien Devine"
 __email__ = "sebdevine@users.noreply.github.com"
 __github__ = "https://github.com/sebdevine/implicit_globals"
 
-__doc__ = """A decorator that provides a way to override a function/method 's global and default variables
+__doc__ = """A decorator that provides a way to override a function's global variables
 
 Those global/default variables can be overriden using a dict-like api.
 
@@ -65,7 +65,8 @@ Usage:
     >>> # Override a global variable
     >>> implicit["AAA"] = "BAZ"
     >>> # Override builtin function
-    >>> implicit["print"] = lambda *_: sys.stdout.write("YO-- %s\\n" % ', '.join(map(str, _)))
+    >>> implicit["print"] = \
+    ...     lambda *_: sys.stdout.write("YO-- %s\\n" % ', '.join(map(str, _)))
     >>> # Override global function
     >>> implicit["load"] = lambda: "New Hello"
     >>> # Override default parameter
@@ -158,7 +159,9 @@ class ImplicitGlobals(MutableMapping):
             func_defaults = fa.defaults or tuple()
             func_kwdefaults = fa.kwonlydefaults or dict()
 
-            __kwdefaults__ = dict(zip(func_defaults[::-1], func_args[::-1]), **func_kwdefaults)
+            __kwdefaults__ = dict(zip(func_defaults[::-1],
+                                      func_args[::-1]),
+                                  **func_kwdefaults)
             for k, v in __kwdefaults__.items():
                 if k in this._overrides:
                     __kwdefaults__[k] = this._overrides[k]

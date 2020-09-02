@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 90
+ignore =
+  B3,
+  DW12,
+  W504
+exclude =
+    build/
+    test_implicit_globals.py
