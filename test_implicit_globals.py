@@ -13,6 +13,8 @@ def load():
 def foo(a, b, c=1, *, d=None):
     return "foo", a, b, c, d, AAA, load()
 
+def foosey(a, b, c=[], *, d=None):
+    return "foo", a, b, c, d, AAA, load()
 
 def bar(a, b):
     return a + b, foo(a, b)
@@ -92,6 +94,25 @@ def test_implicit_method():
     implicit["b"] = 789789
     assert baz.method(10, 4) == (14, ("foo", 10, 4, 1, 333, "BAR", "New Hello"))
 
+def test_with_list_parms():
+    implicit = ImplicitGlobals()
+
+    class Baz:
+
+        @implicit
+        def method(self, a, b):
+            return a + b, foo(a, b)
+
+    baz = Baz()
+    assert baz.method(10, 4) == (14, ("foo", 10, 4, 1, None, "FRE", "Hello"))
+    baz2 = implicit(foosey)
+    implicit['foo'] = baz2
+    assert baz.method(10, 4) == (14, ("foo", 10, 4, [], None, "FRE", "Hello"))
+    implicit['c'] = [1,2,3]
+    assert baz.method(10, 4) == (14, ("foo", 10, 4, [1,2,3], None, "FRE", "Hello"))
+    implicit['d'] = "dee"
+    implicit['AAA'] = "reset"
+    assert baz.method(10, 4) == (14, ("foo", 10, 4, [1,2,3], "dee", "reset", "Hello"))
 
 def test_errors():
     implicit = ImplicitGlobals()

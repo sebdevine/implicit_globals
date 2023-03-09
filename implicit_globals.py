@@ -124,6 +124,7 @@ class ImplicitGlobals(MutableMapping):
     def __setitem__(self, key, value):
         self._overrides[key] = value
 
+
     # noinspection PyMethodParameters
     def __call__(this, func: callable) -> callable:
         """Called upon function decoration
@@ -153,20 +154,29 @@ class ImplicitGlobals(MutableMapping):
                     argdefs=func.__defaults__,
                     closure=func.__closure__))
 
-            # Reconstruct the keyword arguments' defaults
+            # Reconstruct the keyword arguments' & default values on args
             fa: inspect.FullArgSpec = inspect.getfullargspec(func)
             func_args = fa.args or tuple()
             func_defaults = fa.defaults or tuple()
             func_kwdefaults = fa.kwonlydefaults or dict()
 
-            __kwdefaults__ = dict(zip(func_defaults[::-1],
-                                      func_args[::-1]),
-                                  **func_kwdefaults)
-            for k, v in __kwdefaults__.items():
-                if k in this._overrides:
-                    __kwdefaults__[k] = this._overrides[k]
+            # defaults: reverse order pairwise
+            # leading args may have no default
+            defaults = dict(
+                          zip(func_args[::-1],
+                              func_defaults[::-1])
+                       )
 
-            new_f.__kwdefaults__ = __kwdefaults__
+            for k in defaults.keys():
+                if k in this._overrides.keys():
+                    defaults[k] = this._overrides[k]
+            new_f.__defaults__ = tuple(defaults.values())[::-1]
+
+            for k in func_kwdefaults.keys():
+                if k in this._overrides.keys():
+                    func_kwdefaults[k] = this._overrides[k]
+            new_f.__kwdefaults__ = func_kwdefaults
+
             return new_f
 
         if not is_method:
@@ -181,7 +191,6 @@ class ImplicitGlobals(MutableMapping):
 
         functools.update_wrapper(wrapped=func, wrapper=wrapper)
         return wrapper
-
 
 #: Default globals implicits decorator
 implicit = ImplicitGlobals()
