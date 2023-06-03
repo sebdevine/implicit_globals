@@ -101,3 +101,20 @@ def test_errors():
 
     with pytest.raises(TypeError):
         implicit(333)
+
+
+def test_implicit_with_default_mutable_arg():
+
+    implicit = ImplicitGlobals()
+
+    @implicit
+    def foox(a=[]):
+        return a, AAA
+
+    assert foox() == ([], AAA)
+    implicit["AAA"] = 2
+    assert foox() == ([], 2)
+
+
+if __name__ == "__main__":
+    test_implicit_with_default_mutable_arg()

@@ -92,7 +92,7 @@ import inspect
 import types
 from typing import MutableMapping
 
-__all__ = ['ImplicitGlobals', 'implicit']
+__all__ = ["ImplicitGlobals", "implicit"]
 
 
 def islambda(func: callable) -> bool:
@@ -134,13 +134,10 @@ class ImplicitGlobals(MutableMapping):
         if islambda(func):
             raise TypeError("Cannot work on lambda functions")
 
-        # Poor man's class function detector
-        is_method = func.__qualname__.count('.') > 0
+        is_method = inspect.ismethod(func)
 
         def new_func() -> types.FunctionType:
-            # Make a copy to avoid side effect the original function
-            __globals__: dict = copy.copy(func.__globals__)
-            # Then add our overrides
+            __globals__: dict = dict(func.__globals__)
             __globals__.update(this._overrides)
 
             # noinspection PyTypeChecker
@@ -151,7 +148,9 @@ class ImplicitGlobals(MutableMapping):
                     __globals__,
                     name=func.__name__,
                     argdefs=func.__defaults__,
-                    closure=func.__closure__))
+                    closure=func.__closure__,
+                ),
+            )
 
             # Reconstruct the keyword arguments' defaults
             fa: inspect.FullArgSpec = inspect.getfullargspec(func)
@@ -159,9 +158,9 @@ class ImplicitGlobals(MutableMapping):
             func_defaults = fa.defaults or tuple()
             func_kwdefaults = fa.kwonlydefaults or dict()
 
-            __kwdefaults__ = dict(zip(func_defaults[::-1],
-                                      func_args[::-1]),
-                                  **func_kwdefaults)
+            __kwdefaults__ = dict(
+                zip(func_args[::-1], func_defaults[::-1],), **func_kwdefaults
+            )
             for k, v in __kwdefaults__.items():
                 if k in this._overrides:
                     __kwdefaults__[k] = this._overrides[k]
